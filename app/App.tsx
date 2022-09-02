@@ -1,20 +1,32 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { FC } from "react";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { RecoilRoot } from "recoil";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { NavigationContainer } from "@react-navigation/native";
 
-export default function App() {
+import useFonts from "@src/hooks/useFonts";
+import RootStackScreen from "@src/screens/RootStackScreen";
+
+const queryClient = new QueryClient();
+
+const App: FC = () => {
+  const { fontsLoaded, onLayoutRootView } = useFonts();
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <QueryClientProvider client={queryClient}>
+      <RecoilRoot>
+        <SafeAreaProvider onLayout={onLayoutRootView}>
+          <NavigationContainer>
+            <RootStackScreen />
+          </NavigationContainer>
+        </SafeAreaProvider>
+      </RecoilRoot>
+    </QueryClientProvider>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
