@@ -2,7 +2,21 @@ version: "3"
 services:
     backend:
         build:
-            context: ./backend
+            context: ./back
             dockerfile: ./Dockerfile
         ports:
             - "8888:8080"
+    mysql:
+      container_name: patient_pig_local
+      image: mysql/mysql-server:5.7
+      environment:
+        MYSQL_ROOT_HOST: "%"
+        MYSQL_USER: "pig"
+        MYSQL_PASSWORD: "pig"
+        MYSQL_DATABASE: "patient_pig"
+      ports:
+        - "3307:3306"
+      command:
+        - "mysqld"
+        - "--character-set-server=utf8mb4"
+        - "--collation-server=utf8mb4_unicode_ci"

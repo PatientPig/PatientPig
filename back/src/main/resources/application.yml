@@ -1,0 +1,17 @@
+spring:
+  profiles:
+    active: local
+
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3307/patient_pig
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: pig
+    password: pig
+
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+
+debug: true
