@@ -5,9 +5,11 @@ import { RecoilRoot } from "recoil";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { NavigationContainer } from "@react-navigation/native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 import useFonts from "@src/hooks/useFonts";
 import RootStackScreen from "@src/screens/RootStackScreen";
+import QuestionModal from "@src/components/QuestionModal";
 
 const queryClient = new QueryClient();
 
@@ -24,7 +26,10 @@ const App: FC = () => {
         <SafeAreaProvider onLayout={onLayoutRootView}>
           <NavigationContainer>
             <GestureHandlerRootView style={styles.rnghRoot}>
-              <RootStackScreen />
+              <BottomSheetModalProvider>
+                <RootStackScreen />
+                <QuestionModal />
+              </BottomSheetModalProvider>
             </GestureHandlerRootView>
           </NavigationContainer>
         </SafeAreaProvider>

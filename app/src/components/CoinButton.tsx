@@ -4,19 +4,18 @@ import Animated, {
   useSharedValue,
   useAnimatedStyle,
   useDerivedValue,
-  useAnimatedReaction,
   withTiming,
-  interpolate,
-  withSequence,
+  runOnJS,
 } from "react-native-reanimated";
+import { useRecoilValue } from "recoil";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { FontAwesome5 } from "@expo/vector-icons";
 
 import Text from "@src/components/Text";
-import { useRecoilValue } from "recoil";
 import coinBankLayoutAtom from "@src/recoil/coinBankLayoutAtom";
-import Layout, { Position } from "@src/interface/Layout";
+import Layout from "@src/interface/Layout";
 import { getCenterPosition } from "@src/utils/layoutUtils";
+import useQuestionModalController from "@src/hooks/useQuestionModalController";
 
 interface Props {
   style?: StyleProp<ViewStyle>;
@@ -49,6 +48,8 @@ const CoinButton: FC<Props> = ({ style }) => {
     return true;
   });
 
+  const { showQuestionModal } = useQuestionModalController();
+
   const coinRef = useRef<Animated.View>(null);
   const [coinLayout, setCoinLayout] = useState<Layout>({ x: 0, y: 0, width: 0, height: 0 });
   const coinBankLayout = useRecoilValue(coinBankLayoutAtom);
@@ -67,6 +68,7 @@ const CoinButton: FC<Props> = ({ style }) => {
       if (finished) {
         movePositionX.value = 0;
         lastTouchedAt.value = 0;
+        runOnJS(showQuestionModal)();
       }
     });
 
@@ -129,8 +131,8 @@ const CoinButton: FC<Props> = ({ style }) => {
           ref={coinRef}
           style={[styles.button, coinAnimatedStyle]}
           onLayout={() => {
-            coinRef.current?.measureInWindow((x, y, width, height) => {
-              setCoinLayout({ x, y, height, width });
+            coinRef.current?.measure((x, y, width, height, pageX, pageY) => {
+              setCoinLayout({ x: pageX, y: pageY, height, width });
             });
           }}
         >

@@ -18,10 +18,10 @@ const CoinBank: FC<Props> = () => {
       ref={coinBankRef}
       style={styles.icon}
       onLayout={() => {
-        coinBankRef.current?.measureInWindow((x, y, width, height) => {
+        coinBankRef.current?.measure((x, y, width, height, pageX, pageY) => {
           setCoinBankCenterPosition({
-            x,
-            y,
+            x: pageX,
+            y: pageY,
             width,
             height,
           });
