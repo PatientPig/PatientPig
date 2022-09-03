@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
   },
   guide: {
     alignItems: "center",
-    marginBottom: 28,
+    marginBottom: 10,
   },
   guideText: {
     fontSize: 25,

@@ -7,12 +7,14 @@ import { RootStackScreenProps } from "@src/types/navigation";
 import CoinBank from "@src/components/CoinBank";
 import CoinButton from "@src/components/CoinButton";
 import SignBoard from "@src/components/SignBoard";
+import ScoreBoard from "@src/components/ScoreBoard";
 import Text from "@src/components/Text";
 
 const HomeScreen: FC<RootStackScreenProps<"Home">> = ({ navigation }) => {
   return (
     <SafeAreaView>
       <SignBoard style={styles.signBoard} />
+      <ScoreBoard style={styles.scoreBoard} />
       <View style={styles.body}>
         <CoinBank />
         <View style={styles.actions}>
@@ -47,6 +49,9 @@ const styles = StyleSheet.create({
   signBoard: {
     marginTop: 30,
   },
+  scoreBoard: {
+    marginTop: 22,
+  },
   actions: {
     flexDirection: "row",
     marginTop: 40,
@@ -66,6 +71,7 @@ const styles = StyleSheet.create({
     minWidth: 86,
   },
   body: {
+    paddingTop: 30,
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
