@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface CoinRepository extends JpaRepository<Coin, Long> {
 
-    List<Coin> findAllByUserOrderByIdAsc(User user);
+    List<Coin> findAllByUserOrderByIdDesc(User user);
 }

@@ -40,7 +40,7 @@ public class CoinServiceImpl implements CoinService {
     public List<CoinResponse> getCoinHistory(String nickname) {
         User user = userFacade.findByNickname(nickname);
 
-        return coinRepository.findAllByUserOrderByIdAsc(user)
+        return coinRepository.findAllByUserOrderByIdDesc(user)
                 .stream().map(CoinResponse::of)
                 .collect(Collectors.toList());
     }
