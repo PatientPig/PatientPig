@@ -9,4 +9,5 @@ public interface UserService {
     Integer getPig(String nickname);
     String updateUser(String nickname, String newNickname);
     List<UserResponse> getPigRanking();
+    void feedPig(String nickname, Integer feed);
 }

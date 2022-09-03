@@ -34,4 +34,9 @@ public class UserController {
     public List<UserResponse> getPigRanking() {
         return userService.getPigRanking();
     }
+
+    @PutMapping("/feed")
+    public void feedPig(@RequestParam String nickname, @RequestParam Integer feed) {
+        userService.feedPig(nickname, feed);
+    }
 }

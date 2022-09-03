@@ -50,4 +50,11 @@ public class UserServiceImpl implements UserService {
                 .map(UserResponse::of)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    @Transactional
+    public void feedPig(String nickname, Integer feed) {
+        User user = userFacade.findByNickname(nickname);
+        user.feedPig(feed);
+    }
 }
