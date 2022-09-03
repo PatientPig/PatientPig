@@ -16,15 +16,15 @@ const ItemListScreen: FC<RootStackScreenProps<"ItemList">> = () => {
   const renderItem: ListRenderItem<Item> = ({ item }) => {
     const commasNumber = numberWithCommas(String(item.value));
     return (
-      <Swipeable>
-        <View style={styles.container}>
-          <View style={styles.item}>
-            <AntDesign name="like2" size={24} color="black" />
-            <Text style={{ fontSize: 20, marginLeft: 10 }}>{item.desc}</Text>
-          </View>
-          <Text style={styles.value}>{commasNumber}P</Text>
+      <View style={styles.container}>
+        <View style={styles.item}>
+          <AntDesign name="like2" size={24} color="black" />
+          <Text numberOfLines={1} style={{ fontSize: 20, marginLeft: 10, width: "90%" }}>
+            {item.desc}
+          </Text>
         </View>
-      </Swipeable>
+        <Text style={styles.value}>{commasNumber}P</Text>
+      </View>
     );
   };
 
@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     justifyContent: "center",
+    marginBottom: 10,
   },
   header: {
     flexDirection: "row",
