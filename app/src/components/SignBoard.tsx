@@ -6,6 +6,7 @@ import coinBankLayoutAtom from "@src/recoil/coinBankLayoutAtom";
 import { useRecoilValue } from "recoil";
 import Layout from "@src/interface/Layout";
 import { getCenterPosition } from "@src/utils/layoutUtils";
+import useAuthUserId from "@src/hooks/useAuthUserId";
 
 interface Props {
   style?: StyleProp<ViewStyle>;
@@ -32,6 +33,7 @@ const dotPositions: ViewStyle[] = [
 
 const SignBoard: FC<Props> = ({ style }) => {
   const ref = useRef<View>(null);
+  const authUserId = useAuthUserId();
 
   const [signBoardLayout, setSignBoardLayout] = useState<Layout>({
     x: 0,
@@ -70,6 +72,7 @@ const SignBoard: FC<Props> = ({ style }) => {
       }}
     >
       <Text style={styles.title}>Pig Game</Text>
+      <Text style={styles.nickname}>{authUserId}</Text>
       {dotPositions.map((dotPosition, index) => (
         <View key={index} style={StyleSheet.compose(dotPosition, styles.baseDot)} />
       ))}
@@ -134,13 +137,18 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
     borderRadius: 12,
     backgroundColor: "#F71374",
-    paddingVertical: 24,
+    paddingVertical: 14,
     marginHorizontal: 48,
     alignItems: "center",
     justifyContent: "center",
   },
   title: {
     fontSize: 30,
+    color: "white",
+  },
+  nickname: {
+    marginTop: 6,
+    fontSize: 14,
     color: "white",
   },
   baseDot: {
