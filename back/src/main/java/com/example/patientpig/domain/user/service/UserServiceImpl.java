@@ -31,6 +31,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
+    public String createRealUserNickname(String nickname) {
+        User user = userRepository.save(new User());
+        String newNickname = nickname + "#" + user.getId();
+        System.out.println(newNickname);
+        user.updateNickname(newNickname);
+        return user.getNickname();
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public Integer getPig(String nickname) {
         return userFacade.findByNickname(nickname).getPig();

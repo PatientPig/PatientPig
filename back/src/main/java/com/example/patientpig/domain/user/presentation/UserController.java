@@ -7,13 +7,17 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserServiceImpl userService;
+
+    @PutMapping("/real")
+    public String createRealUserNickname(@RequestParam String nickname) {
+        return userService.createRealUserNickname(nickname);
+    }
 
     @PostMapping
     public String createUserAndGetNickname() {
@@ -26,7 +30,7 @@ public class UserController {
     }
 
     @PutMapping
-    public String updateUser(@RequestParam String nickname, @RequestParam(name = "new") String newNickname){
+    public String updateUser(@RequestParam String nickname, @RequestParam(name = "new") String newNickname) {
         return userService.updateUser(nickname, newNickname);
     }
 
