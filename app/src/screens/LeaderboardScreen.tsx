@@ -72,7 +72,6 @@ const styles = StyleSheet.create({
   },
   rankingBox: {
     backgroundColor: "#8D8D8D",
-
     padding: 10,
     borderRadius: 15,
     marginRight: 10,
@@ -97,13 +96,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginBottom: -50,
-  },
-  circle: {
-    backgroundColor: "white",
-    borderRadius: 12,
-    width: 3,
-    height: 3,
-    position: "absolute",
   },
 });
 export default LeaderboardScreen;
