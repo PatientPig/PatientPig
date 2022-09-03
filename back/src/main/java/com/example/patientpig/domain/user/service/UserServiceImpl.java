@@ -44,15 +44,7 @@ public class UserServiceImpl implements UserService {
     public Integer getPig(String nickname) { // 분기 컨트롤 여기서 (테스트하며 한계값 수정)
         double pig = userRepository.findByNickname(nickname).getPig();
 
-        if (pig < LEVEL_1) {
-            return 1;
-        } else if (LEVEL_1 <= pig && pig < LEVEL_2) {
-            return 2;
-        } else if (LEVEL_2 <= pig && pig < LEVEL_3) {
-            return 3;
-        }
-
-        return 4;
+        return pig;
     }
 
     @Transactional
