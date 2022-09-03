@@ -1,13 +1,12 @@
-import React, { FC, useState, useEffect } from "react";
-import { SafeAreaView, StyleSheet, View, ScrollView, FlatList, ListRenderItem } from "react-native";
+import React, { FC } from "react";
+import { SafeAreaView, StyleSheet, View, FlatList, ListRenderItem } from "react-native";
 import { RootStackScreenProps } from "@src/types/navigation";
 import { getItems } from "@src/apis/ItemAPI";
 import Text from "@src/components/Text";
 import Item from "@src/interface/Item";
 import { AntDesign, FontAwesome5 } from "@expo/vector-icons";
+import { useQuery } from "@tanstack/react-query";
 const ItemListScreen: FC<RootStackScreenProps<"ItemList">> = () => {
-  const [Items, setItems] = useState<Item[]>();
-  const [loading, setLoading] = useState<boolean>(true);
   const renderItem: ListRenderItem<Item> = (info) => {
     return (
       <>
@@ -18,14 +17,14 @@ const ItemListScreen: FC<RootStackScreenProps<"ItemList">> = () => {
       </>
     );
   };
-  useEffect(() => {
-    getItems().then((Item) => setItems(Item));
-    setLoading(false);
-  }, []);
-  if (loading) {
-    return <Text>Loading...</Text>;
+  const { isLoading, data: Items } = useQuery<Item[]>(["Items"], getItems);
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text style={styles.loading}>Loading...</Text>
+      </View>
+    );
   }
-
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.header}>
@@ -61,6 +60,9 @@ const styles = StyleSheet.create({
   },
   ItemContainer: {
     margin: 10,
+  },
+  loading: {
+    fontSize: 80,
   },
 });
 export default ItemListScreen;
