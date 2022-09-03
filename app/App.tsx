@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, StatusBar } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { RecoilRoot } from "recoil";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -22,22 +22,25 @@ const App: FC = () => {
   }
 
   return (
-    <RecoilRoot>
-      <QueryClientProvider client={queryClient}>
-        <SafeAreaProvider onLayout={onLayoutRootView}>
-          <AuthContainer>
-            <NavigationContainer>
-              <GestureHandlerRootView style={styles.rnghRoot}>
-                <BottomSheetModalProvider>
-                  <RootStackScreen />
-                  <QuestionModal />
-                </BottomSheetModalProvider>
-              </GestureHandlerRootView>
-            </NavigationContainer>
-          </AuthContainer>
-        </SafeAreaProvider>
-      </QueryClientProvider>
-    </RecoilRoot>
+    <>
+      <StatusBar barStyle="light-content" backgroundColor="#0D1C18" />
+      <RecoilRoot>
+        <QueryClientProvider client={queryClient}>
+          <SafeAreaProvider onLayout={onLayoutRootView}>
+            <AuthContainer>
+              <NavigationContainer>
+                <GestureHandlerRootView style={styles.rnghRoot}>
+                  <BottomSheetModalProvider>
+                    <RootStackScreen />
+                    <QuestionModal />
+                  </BottomSheetModalProvider>
+                </GestureHandlerRootView>
+              </NavigationContainer>
+            </AuthContainer>
+          </SafeAreaProvider>
+        </QueryClientProvider>
+      </RecoilRoot>
+    </>
   );
 };
 

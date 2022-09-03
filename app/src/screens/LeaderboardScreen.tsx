@@ -1,12 +1,12 @@
 import React, { FC } from "react";
 import { View, StyleSheet, FlatList, ListRenderItem } from "react-native";
 import { RootStackScreenProps } from "@src/types/navigation";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useQuery } from "@tanstack/react-query";
 import { getRanking } from "@src/apis/RankingApi";
 import Text from "@src/components/Text";
 import User from "@src/interface/User";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import SafeAreaView from "@src/components/SafeAreaView";
 
 const LeaderboardScreen: FC<RootStackScreenProps<"Leaderboard">> = () => {
   const { isLoading, data: Ranking } = useQuery(["Ranking"], getRanking);
@@ -26,9 +26,9 @@ const LeaderboardScreen: FC<RootStackScreenProps<"Leaderboard">> = () => {
   );
   if (isLoading) return <Text>Loading...</Text>;
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView>
       <View style={styles.header}>
-        <MaterialCommunityIcons name="trophy" size={24} color="black" />
+        <MaterialCommunityIcons name="trophy" size={30} color="white" />
         <Text style={styles.title}>최강 꿀꿀이를 찾아라!</Text>
       </View>
       <FlatList data={Ranking} renderItem={renderItem} keyExtractor={(item, index) => item.id} />
@@ -36,14 +36,12 @@ const LeaderboardScreen: FC<RootStackScreenProps<"Leaderboard">> = () => {
   );
 };
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-  },
   Container: {
     backgroundColor: "#FFCF72",
     borderRadius: 5,
     padding: 10,
-    margin: 10,
+    marginLeft: 10,
+    marginRight: 10,
     flexDirection: "row",
   },
   scoreBox: {
@@ -53,7 +51,7 @@ const styles = StyleSheet.create({
     minWidth: "55%",
   },
   nameBox: {
-    backgroundColor: "#DB5F6A",
+    backgroundColor: "#F71374",
     padding: 10,
     borderRadius: 5,
     marginRight: 10,
@@ -69,7 +67,9 @@ const styles = StyleSheet.create({
     fontSize: 30,
   },
   title: {
-    fontSize: 30,
+    margin: 10,
+    fontSize: 33,
+    color: "white",
     textAlign: "center",
   },
   header: {

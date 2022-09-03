@@ -9,7 +9,6 @@ import Animated, {
 } from "react-native-reanimated";
 import { useRecoilValue } from "recoil";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import { FontAwesome5 } from "@expo/vector-icons";
 
 import Text from "@src/components/Text";
 import coinBankLayoutAtom from "@src/recoil/coinBankLayoutAtom";
@@ -125,13 +124,12 @@ const CoinButton: FC<Props> = ({ style }) => {
   return (
     <View style={[styles.container, style]}>
       <Animated.View style={[styles.guide, guideAnimatedStyle]}>
-        <Text style={{ fontSize: 25 }}>TOUCHE ME</Text>
-        <FontAwesome5 name="sort-down" size={24} color="black" />
+        <Text style={styles.guideText}>TOUCHE ME!</Text>
       </Animated.View>
       <GestureDetector gesture={panGesture}>
         <Animated.View
           ref={coinRef}
-          style={[styles.button, coinAnimatedStyle]}
+          style={coinAnimatedStyle}
           onLayout={() => {
             coinRef.current?.measure((x, y, width, height, pageX, pageY) => {
               setCoinLayout({ x: pageX, y: pageY, height, width });
@@ -151,9 +149,11 @@ const styles = StyleSheet.create({
   },
   guide: {
     alignItems: "center",
+    marginBottom: 10,
   },
-  button: {
-    marginTop: 15,
+  guideText: {
+    fontSize: 25,
+    color: "white",
   },
 });
 

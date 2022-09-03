@@ -17,9 +17,6 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
 
 pig:
   LEVEL_1: 1000
