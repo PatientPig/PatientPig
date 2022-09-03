@@ -1,11 +1,8 @@
 package com.example.patientpig.domain.coin.presentation.dto;
 
 import com.example.patientpig.domain.coin.domain.Coin;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Builder
