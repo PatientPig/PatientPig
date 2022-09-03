@@ -1,10 +1,20 @@
 import { atom } from "recoil";
 
-interface CoinBankLayoutAtom {}
+interface CoinBankLayoutAtom {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
 
 const coinBankLayoutAtom = atom<CoinBankLayoutAtom>({
   key: "@coinBankLayoutAtom",
-  default: {},
+  default: {
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
+  },
 });
 
 export default coinBankLayoutAtom;

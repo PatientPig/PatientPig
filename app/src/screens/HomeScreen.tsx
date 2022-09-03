@@ -1,9 +1,10 @@
 import React, { FC } from "react";
-import { View, StyleSheet, TouchableOpacity, SafeAreaView, Text } from "react-native";
+import { View, StyleSheet, TouchableOpacity, SafeAreaView } from "react-native";
 
 import { RootStackScreenProps } from "@src/types/navigation";
 import CoinBank from "@src/components/CoinBank";
 import CoinButton from "@src/components/CoinButton";
+import Text from "@src/components/Text";
 
 const HomeScreen: FC<RootStackScreenProps<"Home">> = ({ navigation }) => {
   return (
@@ -15,7 +16,7 @@ const HomeScreen: FC<RootStackScreenProps<"Home">> = ({ navigation }) => {
             navigation.navigate("Leaderboard");
           }}
         >
-          <Text style={{ fontFamily: "DungGeunMo", fontSize: 25 }}>리더보드</Text>
+          <Text style={{ fontSize: 25 }}>리더보드</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.headerButton}
@@ -23,7 +24,7 @@ const HomeScreen: FC<RootStackScreenProps<"Home">> = ({ navigation }) => {
             navigation.navigate("ItemList");
           }}
         >
-          <Text style={{ fontFamily: "DungGeunMo", fontSize: 25 }}>인내목록</Text>
+          <Text style={{ fontSize: 25 }}>인내목록</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.body}>

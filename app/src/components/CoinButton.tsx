@@ -1,5 +1,5 @@
 import React, { FC, memo, useEffect } from "react";
-import { View, Text, StyleProp, ViewStyle, StyleSheet } from "react-native";
+import { View, StyleProp, ViewStyle, StyleSheet } from "react-native";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -7,6 +7,8 @@ import Animated, {
 } from "react-native-reanimated";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { FontAwesome5 } from "@expo/vector-icons";
+
+import Text from "@src/components/Text";
 
 interface Props {
   style?: StyleProp<ViewStyle>;
@@ -66,7 +68,7 @@ const CoinButton: FC<Props> = ({ style }) => {
   return (
     <View style={[styles.container, style]}>
       <Animated.View style={[styles.guide, guideAnimatedStyle]}>
-        <Text style={{ fontFamily: "DungGeunMo", fontSize: 25 }}>TOUCHE ME</Text>
+        <Text style={{ fontSize: 25 }}>TOUCHE ME</Text>
         <FontAwesome5 name="sort-down" size={24} color="black" />
       </Animated.View>
       <GestureDetector gesture={panGesture}>
