@@ -2,6 +2,7 @@ package com.example.patientpig.domain.user.service;
 
 import com.example.patientpig.domain.user.domain.User;
 import com.example.patientpig.domain.user.domain.repository.UserRepository;
+import com.example.patientpig.domain.user.facade.UserFacade;
 import com.example.patientpig.domain.user.presentation.dto.UserResponse;
 import com.example.patientpig.global.utils.NicknameGenerator;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final UserFacade userFacade;
     private final NicknameGenerator nicknameGenerator;
 
     @Value("${pig.LEVEL_1}")
@@ -41,7 +43,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public Integer getPig(String nickname) { // 분기 컨트롤 여기서 (테스트하며 한계값 수정)
-        double pig = userRepository.findByNickname(nickname).getPig();
+        double pig = userFacade.findByNickname(nickname).getPig();
 
         if (pig < LEVEL_1) {
             return 1;
@@ -56,7 +58,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public String updateUser(String nickname, String newNickname) {
-        User user = userRepository.findByNickname(nickname);
+        User user = userFacade.findByNickname(nickname);
         user.updateNickname(newNickname);
 
         return user.getNickname();
