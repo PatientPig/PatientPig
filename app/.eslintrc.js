@@ -15,5 +15,11 @@ module.exports = {
         additionalHooks: "(useRecoilCallback|useRecoilTransaction_UNSTABLE)",
       },
     ],
+    "prettier/prettier": [
+      "error",
+      {
+        endOfLine: "auto",
+      },
+    ],
   },
 };
