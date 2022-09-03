@@ -1,9 +1,8 @@
 import React, { FC } from "react";
 import { SafeAreaView, StyleSheet, View, FlatList, ListRenderItem, StatusBar } from "react-native";
 import { RootStackScreenProps } from "@src/types/navigation";
-import { AntDesign } from "@expo/vector-icons";
-import Swipeable from "react-native-gesture-handler/Swipeable";
 
+import Loader from "@src/components/Loader";
 import Text from "@src/components/Text";
 import Item from "@src/interface/Item";
 import useItems from "@src/query/useItems";
@@ -18,8 +17,7 @@ const ItemListScreen: FC<RootStackScreenProps<"ItemList">> = () => {
     return (
       <View style={styles.container}>
         <View style={styles.item}>
-          <AntDesign name="like2" size={24} color="black" />
-          <Text numberOfLines={1} style={{ fontSize: 20, marginLeft: 10, width: "90%" }}>
+          <Text numberOfLines={3} style={{ fontSize: 16 }}>
             {item.desc}
           </Text>
         </View>
@@ -29,23 +27,21 @@ const ItemListScreen: FC<RootStackScreenProps<"ItemList">> = () => {
   };
 
   if (isLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text style={styles.loading}>Loading...</Text>
-      </View>
-    );
+    return <Loader style={{ backgroundColor: "white" }} />;
   }
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="dark-content" backgroundColor="white" />
-      <View style={styles.header}>
-        <Text style={{ fontSize: 30, color: "#5D5FDA" }}>잘 참았다 꿀!</Text>
-      </View>
       <FlatList
         style={styles.ItemContainer}
         data={items}
         renderItem={renderItem}
+        ListHeaderComponent={
+          <View style={styles.header}>
+            <Text style={{ fontSize: 30, color: "#5D5FDA" }}>잘 참았다 꿀!</Text>
+          </View>
+        }
         keyExtractor={(item, index) => item.desc}
       />
     </SafeAreaView>
@@ -54,8 +50,13 @@ const ItemListScreen: FC<RootStackScreenProps<"ItemList">> = () => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
+    alignItems: "center",
     justifyContent: "center",
     marginBottom: 10,
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingHorizontal: 6,
+    paddingVertical: 14,
   },
   header: {
     flexDirection: "row",
@@ -64,32 +65,25 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   value: {
-    backgroundColor: "#F71374",
-    color: "white",
-    width: "25%",
+    color: "#F71374",
     textAlign: "center",
     borderRadius: 10,
-    padding: 15,
-    fontSize: 20,
+    fontSize: 14,
   },
   item: {
+    flex: 1,
     flexDirection: "row",
     alignItems: "center",
     borderColor: "black",
-    borderWidth: 1,
-    borderRadius: 10,
-    width: "70%",
     marginRight: 10,
     padding: 5,
   },
   safeArea: {
     flex: 1,
+    backgroundColor: "white",
   },
   ItemContainer: {
     margin: 10,
-  },
-  loading: {
-    fontSize: 80,
   },
 });
 

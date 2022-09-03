@@ -24,3 +24,11 @@ export const signUp = async () => {
 
   return user;
 };
+
+export const feed = async (args: { id: string; value: number }) =>
+  axios.put("/user/feed", undefined, {
+    params: {
+      nickname: args.id,
+      feed: args.value,
+    },
+  });

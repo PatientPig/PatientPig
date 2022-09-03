@@ -1,10 +1,9 @@
-import React, { FC, memo, useEffect, useState, useRef } from "react";
-import { View, StyleProp, ViewStyle, StyleSheet } from "react-native";
+import React, { FC, memo, useEffect, useState, useRef, useCallback } from "react";
+import { View, StyleProp, ViewStyle, StyleSheet, Image } from "react-native";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   useDerivedValue,
-  withTiming,
   runOnJS,
 } from "react-native-reanimated";
 import { useRecoilValue } from "recoil";
@@ -15,25 +14,36 @@ import coinBankLayoutAtom from "@src/recoil/coinBankLayoutAtom";
 import Layout from "@src/interface/Layout";
 import { getCenterPosition } from "@src/utils/layoutUtils";
 import useQuestionModalController from "@src/hooks/useQuestionModalController";
-import Coin from "@assets/coin.svg";
+import FlyingCoin, { Props as FlyingCoinProps } from "@src/components/FlyingCoin";
+import useUserAddValueMutation from "@src/query/useUserAddValueMutation";
 
 interface Props {
   style?: StyleProp<ViewStyle>;
 }
 
 const CoinButton: FC<Props> = ({ style }) => {
-  const movePositionX = useSharedValue(0);
-  const movePositionY = useSharedValue(0);
+  const [coinQueue, setCoinQueue] = useState<
+    Pick<FlyingCoinProps, "id" | "initScale" | "value" | "transition">[]
+  >([]);
+
+  const { showQuestionModal } = useQuestionModalController();
+  const userAddValueMutation = useUserAddValueMutation();
+
+  const handleFinish: Exclude<FlyingCoinProps["onFinish"], undefined> = useCallback((args) => {
+    setCoinQueue((prev) => prev.filter(({ id }) => id !== args.id));
+
+    if (args.value >= 1000) {
+      showQuestionModal({ value: args.value });
+    } else {
+      userAddValueMutation.mutate({ value: args.value });
+    }
+  }, []);
+
   const lastTouchedAt = useSharedValue(0);
   const currentAt = useSharedValue(Date.now());
-  const scaleDown = useSharedValue(-1);
   const scaleUp = useDerivedValue(() => {
     if (lastTouchedAt.value === 0) {
       return 0;
-    }
-
-    if (scaleDown.value !== -1) {
-      return scaleDown.value;
     }
 
     const diff = Math.max(0, (currentAt.value - lastTouchedAt.value) / 1000);
@@ -48,8 +58,6 @@ const CoinButton: FC<Props> = ({ style }) => {
     return true;
   });
 
-  const { showQuestionModal } = useQuestionModalController();
-
   const coinRef = useRef<Animated.View>(null);
   const [coinLayout, setCoinLayout] = useState<Layout>({ x: 0, y: 0, width: 0, height: 0 });
   const coinBankLayout = useRecoilValue(coinBankLayoutAtom);
@@ -60,25 +68,22 @@ const CoinButton: FC<Props> = ({ style }) => {
 
     const diffX = coinBankCenterPosition.x - coinCenterPosition.x;
     const diffY = coinBankCenterPosition.y - coinCenterPosition.y;
+    const duration = currentAt.value - lastTouchedAt.value;
 
-    scaleDown.value = scaleUp.value;
-    scaleDown.value = withTiming(-1, { duration: 500 });
+    runOnJS(setCoinQueue)((prev) => [
+      ...prev,
+      {
+        id: `${Math.random()}`,
+        value: duration,
+        initScale: 1 + scaleUp.value,
+        transition: {
+          x: diffX,
+          y: diffY,
+        },
+      },
+    ]);
 
-    movePositionX.value = withTiming(diffX, { duration: 500 }, (finished) => {
-      if (finished) {
-        const value = currentAt.value - lastTouchedAt.value;
-        movePositionX.value = 0;
-        lastTouchedAt.value = 0;
-        runOnJS(showQuestionModal)({ value });
-      }
-    });
-
-    movePositionY.value = withTiming(diffY, { duration: 500 }, (finished) => {
-      if (finished) {
-        movePositionY.value = 0;
-        lastTouchedAt.value = 0;
-      }
-    });
+    lastTouchedAt.value = 0;
   };
 
   useEffect(() => {
@@ -110,12 +115,6 @@ const CoinButton: FC<Props> = ({ style }) => {
   const coinAnimatedStyle = useAnimatedStyle(() => ({
     transform: [
       {
-        translateX: movePositionX.value,
-      },
-      {
-        translateY: movePositionY.value,
-      },
-      {
         scale: 1 + scaleUp.value,
       },
     ],
@@ -126,19 +125,30 @@ const CoinButton: FC<Props> = ({ style }) => {
       <Animated.View style={[styles.guide, guideAnimatedStyle]}>
         <Text style={styles.guideText}>TOUCHE ME!</Text>
       </Animated.View>
-      <GestureDetector gesture={panGesture}>
-        <Animated.View
-          ref={coinRef}
-          style={coinAnimatedStyle}
-          onLayout={() => {
-            coinRef.current?.measure((x, y, width, height, pageX, pageY) => {
-              setCoinLayout({ x: pageX, y: pageY, height, width });
-            });
-          }}
-        >
-          <Coin with={70} height={70} />
-        </Animated.View>
-      </GestureDetector>
+      <View
+        onLayout={() => {
+          coinRef.current?.measure((x, y, width, height, pageX, pageY) => {
+            setCoinLayout({ x: pageX, y: pageY, height, width });
+          });
+        }}
+      >
+        <GestureDetector gesture={panGesture}>
+          <Animated.View ref={coinRef} style={coinAnimatedStyle}>
+            <Image source={require("@assets/coin.png")} style={{ width: 70, height: 70 }} />
+          </Animated.View>
+        </GestureDetector>
+        {coinQueue.map(({ id, initScale, value, transition }) => (
+          <FlyingCoin
+            key={id}
+            id={id}
+            value={value}
+            initScale={initScale}
+            transition={transition}
+            style={styles.flyingCoin}
+            onFinish={handleFinish}
+          />
+        ))}
+      </View>
     </View>
   );
 };
@@ -154,6 +164,10 @@ const styles = StyleSheet.create({
   guideText: {
     fontSize: 25,
     color: "white",
+  },
+  flyingCoin: {
+    position: "absolute",
+    alignSelf: "center",
   },
 });
 

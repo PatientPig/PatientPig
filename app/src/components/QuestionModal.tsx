@@ -100,8 +100,13 @@ const QuestionModal: FC = () => {
         <View style={styles.header}>
           <Image source={require("@assets/thumb.png")} style={styles.image} />
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>{`잘 참았다 ${numberWithCommas(value)}P!`}</Text>
-            <Text style={styles.title}>이번엔 어떤걸 참았꿀?</Text>
+            <View style={{ flexDirection: "row", marginBottom: 4 }}>
+              <Text style={styles.title}>잘 참았다</Text>
+              <Text style={[styles.title, { marginLeft: 6, color: "#F71374" }]}>
+                {`${numberWithCommas(value)}P!`}
+              </Text>
+            </View>
+            <Text style={styles.title}>왜이렇게 오래 참았꿀?</Text>
           </View>
         </View>
         <BottomSheetTextInput
@@ -139,7 +144,6 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   title: {
-    flex: 1,
     fontSize: 20,
   },
   textInput: {
@@ -148,8 +152,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#f4f4f4",
     marginVertical: 14,
     borderRadius: 6,
-    paddingHorizontal: 6,
-    paddingVertical: 14,
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: 20,
     textAlignVertical: "top",
     fontFamily: "DungGeunMo",
     fontSize: 20,
