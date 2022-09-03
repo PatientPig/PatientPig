@@ -1,6 +1,5 @@
-package com.example.patientpig.coin.presentation.dto;
+package com.example.patientpig.domain.coin.presentation.dto;
 
-import com.example.patientpig.coin.domain.Coin;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
