@@ -27,7 +27,11 @@ const ItemListScreen: FC<RootStackScreenProps<"ItemList">> = () => {
   };
 
   if (isLoading) {
-    return <Loader style={{ backgroundColor: "white" }} />;
+    return (
+      <Loader style={{ backgroundColor: "white" }}>
+        <Text style={{ fontSize: 30 }}>Loading...</Text>
+      </Loader>
+    );
   }
 
   return (
@@ -46,7 +50,7 @@ const ItemListScreen: FC<RootStackScreenProps<"ItemList">> = () => {
           )
         }
         ListEmptyComponent={
-          <Loader>
+          <Loader style={{ backgroundColor: "white" }}>
             <Text style={{ fontSize: 16, color: "#777777" }}>인내가 부족하다...</Text>
           </Loader>
         }

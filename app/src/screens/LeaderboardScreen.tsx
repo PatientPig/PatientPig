@@ -14,6 +14,7 @@ import { RootStackScreenProps } from "@src/types/navigation";
 import User from "@src/interface/User";
 import useRanking from "@src/query/useRanking";
 import useAuthUserId from "@src/hooks/useAuthUserId";
+import Loader from "@src/components/Loader";
 
 const LeaderboardScreen: FC<RootStackScreenProps<"Leaderboard">> = () => {
   const { isLoading, data: users } = useRanking();
@@ -36,7 +37,11 @@ const LeaderboardScreen: FC<RootStackScreenProps<"Leaderboard">> = () => {
   };
 
   if (isLoading) {
-    return <Text>Loading...</Text>;
+    return (
+      <Loader style={{ backgroundColor: "white" }}>
+        <Text style={{ fontSize: 30 }}>Loading...</Text>
+      </Loader>
+    );
   }
 
   return (
