@@ -1,55 +1,36 @@
 import React, { FC } from "react";
-import { View, Button, StyleSheet, TouchableOpacity, SafeAreaView, Text } from "react-native";
-import Animated, {
-  useSharedValue,
-  withTiming,
-  useAnimatedStyle,
-  Easing,
-} from "react-native-reanimated";
+import { View, StyleSheet, TouchableOpacity, SafeAreaView, Text } from "react-native";
 
 import { RootStackScreenProps } from "@src/types/navigation";
+import CoinBank from "@src/components/CoinBank";
+import CoinButton from "@src/components/CoinButton";
 
 const HomeScreen: FC<RootStackScreenProps<"Home">> = ({ navigation }) => {
-  const randomWidth = useSharedValue(10);
-
-  const config = {
-    duration: 500,
-    easing: Easing.bezier(0.5, 0.01, 0, 1),
-  };
-
-  const style = useAnimatedStyle(() => {
-    return {
-      width: withTiming(randomWidth.value, config),
-    };
-  });
-
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.header}>
         <TouchableOpacity
-          style={styles.button}
+          style={styles.headerButton}
           onPress={() => {
             navigation.navigate("Leaderboard");
-          }}>
-          <Text style={{ fontFamily: "DungGeunMo", fontSize: 30 }}>리더보드</Text>
+          }}
+        >
+          <Text style={{ fontFamily: "DungGeunMo", fontSize: 25 }}>리더보드</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.headerButton}
+          onPress={() => {
+            navigation.navigate("ItemList");
+          }}
+        >
+          <Text style={{ fontFamily: "DungGeunMo", fontSize: 25 }}>인내목록</Text>
         </TouchableOpacity>
       </View>
-      <View
-        style={{
-          flex: 1,
-          alignItems: "center",
-          justifyContent: "center",
-          flexDirection: "column",
-        }}>
-        <Animated.View
-          style={[{ width: 100, height: 80, backgroundColor: "black", margin: 30 }, style]}
-        />
-        <Button
-          title="toggle"
-          onPress={() => {
-            randomWidth.value = Math.random() * 350;
-          }}
-        />
+      <View style={styles.body}>
+        <CoinBank />
+      </View>
+      <View style={styles.footer}>
+        <CoinButton />
       </View>
     </SafeAreaView>
   );
@@ -62,12 +43,26 @@ const styles = StyleSheet.create({
   header: {
     marginTop: 30,
     alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
   },
-  button: {
-    paddingHorizontal: 20,
+  headerButton: {
+    marginHorizontal: 20,
+    paddingHorizontal: 10,
     paddingVertical: 14,
     borderWidth: 1,
     borderColor: "black",
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  body: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  footer: {
+    marginVertical: 20,
   },
 });
 
