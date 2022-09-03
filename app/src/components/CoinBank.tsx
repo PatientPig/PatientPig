@@ -1,6 +1,9 @@
 import React, { FC, useRef } from "react";
 import { View, StyleProp, ViewStyle, StyleSheet } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { useSetRecoilState } from "recoil";
+
+import coinBankCenterPositionAtom from "@src/recoil/coinBankLayoutAtom";
 
 interface Props {
   style?: StyleProp<ViewStyle>;
@@ -8,14 +11,21 @@ interface Props {
 
 const CoinBank: FC<Props> = () => {
   const coinBankRef = useRef<View>(null);
+  const setCoinBankCenterPosition = useSetRecoilState(coinBankCenterPositionAtom);
 
   return (
     <View
       ref={coinBankRef}
       style={styles.icon}
-      onLayout={(e) => {
-        coinBankRef.current?.measure(console.log);
-        console.log(e.nativeEvent.layout);
+      onLayout={() => {
+        coinBankRef.current?.measureInWindow((x, y, width, height) => {
+          setCoinBankCenterPosition({
+            x,
+            y,
+            width,
+            height,
+          });
+        });
       }}
     >
       <FontAwesome5 name="piggy-bank" size={100} color="#EE6983" />

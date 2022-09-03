@@ -1,13 +1,8 @@
 import { atom } from "recoil";
 
-interface CoinBankLayoutAtom {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
+import Layout from "@src/interface/Layout";
 
-const coinBankLayoutAtom = atom<CoinBankLayoutAtom>({
+const coinBankLayoutAtom = atom<Layout>({
   key: "@coinBankLayoutAtom",
   default: {
     x: 0,
