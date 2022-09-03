@@ -1,4 +1,4 @@
-package com.example.patientpig.user.presentation.dto;
+package com.example.patientpig.domain.user.presentation.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
