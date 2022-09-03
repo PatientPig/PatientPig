@@ -1,13 +1,33 @@
 import { useMutation } from "@tanstack/react-query";
 
 import * as ItemAPI from "@src/apis/ItemAPI";
+import { useSetRecoilState } from "recoil";
+import authUserAtom from "@src/recoil/authUserAtom";
 
 function useItemCreateMutation() {
-  const mutation = useMutation((args: { value: number; text: string }) => {
-    const { value, text } = args;
+  const setAuthUser = useSetRecoilState(authUserAtom);
 
-    return ItemAPI.createItem({ value, text });
-  });
+  const mutation = useMutation(
+    (args: { value: number; text: string }) => {
+      const { value, text } = args;
+
+      return ItemAPI.createItem({ value, text });
+    },
+    {
+      onMutate: ({ value }) => {
+        setAuthUser((prev) => {
+          if (!prev) {
+            return prev;
+          }
+
+          return {
+            ...prev,
+            value: prev.value + value,
+          };
+        });
+      },
+    }
+  );
 
   return mutation;
 }
