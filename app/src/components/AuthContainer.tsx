@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import LottieView from "lottie-react-native";
 
 import useAuthenticate from "@src/hooks/useAuthenticate";
@@ -9,7 +9,11 @@ interface Props {
 }
 
 const AuthContainer: FC<Props> = ({ children }) => {
-  const { authenticated } = useAuthenticate();
+  const { authenticated, authenticate } = useAuthenticate();
+
+  useEffect(() => {
+    authenticate();
+  }, []);
 
   if (!authenticated) {
     return (

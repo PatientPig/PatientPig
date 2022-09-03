@@ -4,9 +4,10 @@ import LottieView from "lottie-react-native";
 
 interface Props {
   style?: StyleProp<ViewStyle>;
+  children?: React.ReactElement;
 }
 
-const Loader: FC<Props> = ({ style }) => (
+const Loader: FC<Props> = ({ style, children }) => (
   <SafeAreaView
     style={[
       {
@@ -25,6 +26,7 @@ const Loader: FC<Props> = ({ style }) => (
       }}
       source={require("@assets/lotties/global-loader.json")}
     />
+    {children}
   </SafeAreaView>
 );
 

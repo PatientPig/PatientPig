@@ -121,7 +121,7 @@ const QuestionModal: FC = () => {
           disabled={disableConfirmButton}
           onPress={confirm}
         >
-          <Text style={styles.confirmButtonText}>이걸 참았꿀</Text>
+          <Text style={styles.confirmButtonText}>이래서 참았꿀</Text>
         </TouchableOpacity>
       </BottomSheetView>
     </BottomSheetModal>

@@ -14,7 +14,7 @@ export const signIn = async (args: { id: string }) => {
   return user;
 };
 
-export const signUp = async () => {
+export const anonymousSignUp = async () => {
   const res = await axios.post<string>("/user");
 
   const user: User = {
@@ -23,6 +23,21 @@ export const signUp = async () => {
   };
 
   return user;
+};
+
+export const signUp = async (args: { realName: string }) => {
+  const { realName } = args;
+
+  const res = await axios.put<string>("/user/real", undefined, {
+    params: {
+      nickname: realName,
+    },
+  });
+
+  return {
+    id: res.data,
+    value: 0,
+  };
 };
 
 export const feed = async (args: { id: string; value: number }) =>

@@ -35,12 +35,20 @@ const ItemListScreen: FC<RootStackScreenProps<"ItemList">> = () => {
       <StatusBar barStyle="dark-content" backgroundColor="white" />
       <FlatList
         style={styles.ItemContainer}
+        contentContainerStyle={{ flexGrow: 1 }}
         data={items}
         renderItem={renderItem}
         ListHeaderComponent={
-          <View style={styles.header}>
-            <Text style={{ fontSize: 30, color: "#5D5FDA" }}>잘 참았다 꿀!</Text>
-          </View>
+          items?.length === 0 ? null : (
+            <View style={styles.header}>
+              <Text style={{ fontSize: 30, color: "#5D5FDA" }}>잘 참았다 꿀!</Text>
+            </View>
+          )
+        }
+        ListEmptyComponent={
+          <Loader>
+            <Text style={{ fontSize: 16, color: "#777777" }}>인내가 부족하다...</Text>
+          </Loader>
         }
         keyExtractor={(item, index) => item.desc}
       />

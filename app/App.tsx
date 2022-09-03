@@ -11,6 +11,7 @@ import useFonts from "@src/hooks/useFonts";
 import RootStackScreen from "@src/screens/RootStackScreen";
 import QuestionModal from "@src/components/QuestionModal";
 import AuthContainer from "@src/components/AuthContainer";
+import SignUpModal from "@src/components/SignUpModal";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,7 @@ const App: FC = () => {
                   <BottomSheetModalProvider>
                     <RootStackScreen />
                     <QuestionModal />
+                    <SignUpModal />
                   </BottomSheetModalProvider>
                 </GestureHandlerRootView>
               </NavigationContainer>

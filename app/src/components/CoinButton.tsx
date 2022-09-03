@@ -16,6 +16,7 @@ import { getCenterPosition } from "@src/utils/layoutUtils";
 import useQuestionModalController from "@src/hooks/useQuestionModalController";
 import FlyingCoin, { Props as FlyingCoinProps } from "@src/components/FlyingCoin";
 import useUserAddValueMutation from "@src/query/useUserAddValueMutation";
+import * as Haptics from "expo-haptics";
 
 interface Props {
   style?: StyleProp<ViewStyle>;
@@ -102,6 +103,7 @@ const CoinButton: FC<Props> = ({ style }) => {
     .onBegin(() => {
       if (lastTouchedAt.value === 0) {
         lastTouchedAt.value = Date.now();
+        runOnJS(Haptics.impactAsync)(Haptics.ImpactFeedbackStyle.Medium);
       }
     })
     .onFinalize(() => {
