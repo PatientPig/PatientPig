@@ -6,7 +6,6 @@ import com.example.patientpig.domain.user.facade.UserFacade;
 import com.example.patientpig.domain.user.presentation.dto.UserResponse;
 import com.example.patientpig.global.utils.NicknameGenerator;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,7 +34,6 @@ public class UserServiceImpl implements UserService {
     public String createRealUserNickname(String nickname) {
         User user = userRepository.save(new User());
         String newNickname = nickname + "#" + user.getId();
-        System.out.println(newNickname);
         user.updateNickname(newNickname);
         return user.getNickname();
     }
@@ -57,6 +55,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public List<UserResponse> getPigRanking() {
         return userRepository.findAllByOrderByPigDesc().stream()
+                .filter(u -> u.getPig() > 0)
                 .map(UserResponse::of)
                 .collect(Collectors.toList());
     }
