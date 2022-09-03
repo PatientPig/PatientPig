@@ -16,6 +16,10 @@ spring:
     show-sql: true
     generate-ddl: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: 'create-drop'
 
+pig:
+  LEVEL_1: 1000
+  LEVEL_2: 2000
+  LEVEL_3: 3000
 debug: true
