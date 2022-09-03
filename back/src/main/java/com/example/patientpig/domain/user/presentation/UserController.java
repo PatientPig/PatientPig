@@ -16,8 +16,8 @@ public class UserController {
     private final UserServiceImpl userService;
 
     @PostMapping
-    public void createUser(@RequestParam String nickname) {
-        userService.createUser(nickname);
+    public String createUserAndGetNickname() {
+        return userService.createUserAndGetNickname();
     }
 
     @GetMapping

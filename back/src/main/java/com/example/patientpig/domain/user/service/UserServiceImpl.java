@@ -3,6 +3,7 @@ package com.example.patientpig.domain.user.service;
 import com.example.patientpig.domain.user.domain.User;
 import com.example.patientpig.domain.user.domain.repository.UserRepository;
 import com.example.patientpig.domain.user.presentation.dto.UserResponse;
+import com.example.patientpig.global.utils.NicknameGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final NicknameGenerator nicknameGenerator;
 
     @Value("${pig.LEVEL_1}")
     private Integer LEVEL_1;
@@ -29,15 +31,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void createUser(String nickname) {
-        userRepository.save(
-                User.builder()
-                        .nickname(nickname)
-                        .build()
-        );
-    }
+    public String createUserAndGetNickname() {
+        User user = userRepository.save(new User());
+        user.updateNickname(nicknameGenerator.getNickName(user.getId()));
 
-    ;
+        return user.getNickname();
+    }
 
     @Override
     @Transactional(readOnly = true)

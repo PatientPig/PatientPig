@@ -1,14 +1,11 @@
 package com.example.patientpig.domain.user.domain;
 
 import com.example.patientpig.global.entity.BaseTimeEntity;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Getter
-@NoArgsConstructor
 @Entity
 public class User extends BaseTimeEntity {
     @Id
@@ -20,9 +17,7 @@ public class User extends BaseTimeEntity {
 
     private Integer pig;
 
-    @Builder
-    public User(String nickname) {
-        this.nickname = nickname;
+    public User() {
         this.pig = 0;
     }
 
