@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     public List<UserResponse> getPigRanking() {
-        return userRepository.findAllByOrderByPig().stream()
+        return userRepository.findAllByOrderByPigDesc().stream()
                 .map(UserResponse::of)
                 .collect(Collectors.toList());
     }
