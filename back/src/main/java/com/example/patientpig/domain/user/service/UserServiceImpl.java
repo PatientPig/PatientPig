@@ -55,9 +55,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public void updateUser(String nickname, String newNickname) {
+    public String updateUser(String nickname, String newNickname) {
         User user = userRepository.findByNickname(nickname);
         user.updateNickname(newNickname);
+
+        return user.getNickname();
     }
 
     @Transactional(readOnly = true)
