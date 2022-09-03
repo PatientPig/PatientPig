@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { NavigationContainer } from "@react-navigation/native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { StatusBar } from "expo-status-bar";
 
 import useFonts from "@src/hooks/useFonts";
 import RootStackScreen from "@src/screens/RootStackScreen";
@@ -22,22 +23,25 @@ const App: FC = () => {
   }
 
   return (
-    <RecoilRoot>
-      <QueryClientProvider client={queryClient}>
-        <SafeAreaProvider onLayout={onLayoutRootView}>
-          <AuthContainer>
-            <NavigationContainer>
-              <GestureHandlerRootView style={styles.rnghRoot}>
-                <BottomSheetModalProvider>
-                  <RootStackScreen />
-                  <QuestionModal />
-                </BottomSheetModalProvider>
-              </GestureHandlerRootView>
-            </NavigationContainer>
-          </AuthContainer>
-        </SafeAreaProvider>
-      </QueryClientProvider>
-    </RecoilRoot>
+    <>
+      <StatusBar style="light" />
+      <RecoilRoot>
+        <QueryClientProvider client={queryClient}>
+          <SafeAreaProvider onLayout={onLayoutRootView}>
+            <AuthContainer>
+              <NavigationContainer>
+                <GestureHandlerRootView style={styles.rnghRoot}>
+                  <BottomSheetModalProvider>
+                    <RootStackScreen />
+                    <QuestionModal />
+                  </BottomSheetModalProvider>
+                </GestureHandlerRootView>
+              </NavigationContainer>
+            </AuthContainer>
+          </SafeAreaProvider>
+        </QueryClientProvider>
+      </RecoilRoot>
+    </>
   );
 };
 

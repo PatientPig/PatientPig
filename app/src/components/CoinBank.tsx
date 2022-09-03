@@ -1,6 +1,5 @@
 import React, { FC, useRef } from "react";
-import { View, StyleProp, ViewStyle, StyleSheet } from "react-native";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { View, StyleProp, ViewStyle, StyleSheet, Image } from "react-native";
 import { useSetRecoilState } from "recoil";
 
 import coinBankCenterPositionAtom from "@src/recoil/coinBankLayoutAtom";
@@ -16,7 +15,6 @@ const CoinBank: FC<Props> = () => {
   return (
     <View
       ref={coinBankRef}
-      style={styles.icon}
       onLayout={() => {
         coinBankRef.current?.measure((x, y, width, height, pageX, pageY) => {
           setCoinBankCenterPosition({
@@ -28,18 +26,15 @@ const CoinBank: FC<Props> = () => {
         });
       }}
     >
-      <FontAwesome5 name="piggy-bank" size={100} color="#EE6983" />
+      <Image source={require("@assets/coin-bank.png")} style={styles.image} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  icon: {
-    transform: [
-      {
-        rotateY: "180deg",
-      },
-    ],
+  image: {
+    width: 239,
+    height: 258,
   },
 });
 
