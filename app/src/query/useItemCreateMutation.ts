@@ -3,15 +3,21 @@ import { useMutation } from "@tanstack/react-query";
 import * as ItemAPI from "@src/apis/ItemAPI";
 import { useSetRecoilState } from "recoil";
 import authUserAtom from "@src/recoil/authUserAtom";
+import useAuthUserId from "@src/hooks/useAuthUserId";
 
 function useItemCreateMutation() {
+  const authUserId = useAuthUserId();
   const setAuthUser = useSetRecoilState(authUserAtom);
 
   const mutation = useMutation(
-    (args: { value: number; text: string }) => {
+    async (args: { value: number; text: string }) => {
       const { value, text } = args;
 
-      return ItemAPI.createItem({ value, text });
+      if (!authUserId) {
+        throw new Error("Unauthorized");
+      }
+
+      return ItemAPI.createItem({ value, text, id: authUserId });
     },
     {
       onSuccess: (data, { value }) => {

@@ -1,12 +1,15 @@
 import React, { FC } from "react";
 import { SafeAreaView, StyleSheet, View, FlatList, ListRenderItem } from "react-native";
 import { RootStackScreenProps } from "@src/types/navigation";
-import { getItems } from "@src/apis/ItemAPI";
+import { AntDesign, FontAwesome5 } from "@expo/vector-icons";
+
 import Text from "@src/components/Text";
 import Item from "@src/interface/Item";
-import { AntDesign, FontAwesome5 } from "@expo/vector-icons";
-import { useQuery } from "@tanstack/react-query";
+import useItems from "@src/query/useItems";
+
 const ItemListScreen: FC<RootStackScreenProps<"ItemList">> = () => {
+  const { data: items, isLoading } = useItems();
+
   const renderItem: ListRenderItem<Item> = (info) => {
     return (
       <>
@@ -17,7 +20,7 @@ const ItemListScreen: FC<RootStackScreenProps<"ItemList">> = () => {
       </>
     );
   };
-  const { isLoading, data: Items } = useQuery<Item[]>(["Items"], getItems);
+
   if (isLoading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -25,6 +28,7 @@ const ItemListScreen: FC<RootStackScreenProps<"ItemList">> = () => {
       </View>
     );
   }
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.header}>
@@ -33,7 +37,7 @@ const ItemListScreen: FC<RootStackScreenProps<"ItemList">> = () => {
       </View>
       <FlatList
         style={styles.ItemContainer}
-        data={Items}
+        data={items}
         renderItem={renderItem}
         keyExtractor={(item, index) => item.desc}
       ></FlatList>
@@ -65,4 +69,5 @@ const styles = StyleSheet.create({
     fontSize: 80,
   },
 });
+
 export default ItemListScreen;
