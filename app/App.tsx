@@ -1,12 +1,11 @@
 import { FC } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, StatusBar } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { RecoilRoot } from "recoil";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { NavigationContainer } from "@react-navigation/native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { StatusBar } from "expo-status-bar";
 
 import useFonts from "@src/hooks/useFonts";
 import RootStackScreen from "@src/screens/RootStackScreen";
@@ -24,7 +23,7 @@ const App: FC = () => {
 
   return (
     <>
-      <StatusBar style="light" />
+      <StatusBar barStyle="light-content" backgroundColor="#0D1C18" />
       <RecoilRoot>
         <QueryClientProvider client={queryClient}>
           <SafeAreaProvider onLayout={onLayoutRootView}>

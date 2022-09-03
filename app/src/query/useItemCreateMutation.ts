@@ -14,7 +14,7 @@ function useItemCreateMutation() {
       return ItemAPI.createItem({ value, text });
     },
     {
-      onMutate: ({ value }) => {
+      onSuccess: (data, { value }) => {
         setAuthUser((prev) => {
           if (!prev) {
             return prev;

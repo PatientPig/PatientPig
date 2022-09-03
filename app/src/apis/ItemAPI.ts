@@ -25,8 +25,9 @@ export const getItems = () =>
     }, 3000);
   });
 
-export const createItem = (args: { value: number; text: string }) => {
-  const { value, text } = args;
-
-  return Promise.resolve();
-};
+export const createItem = (args: { value: number; text: string }) =>
+  new Promise<void>((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, 500);
+  });
