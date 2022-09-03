@@ -1,6 +1,7 @@
 import React, { FC } from "react";
-import { View, StyleSheet, TouchableOpacity, SafeAreaView } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 
+import SafeAreaView from "@src/components/SafeAreaView";
 import { RootStackScreenProps } from "@src/types/navigation";
 import CoinBank from "@src/components/CoinBank";
 import CoinButton from "@src/components/CoinButton";
@@ -8,7 +9,7 @@ import Text from "@src/components/Text";
 
 const HomeScreen: FC<RootStackScreenProps<"Home">> = ({ navigation }) => {
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView>
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.headerButton}
@@ -38,9 +39,6 @@ const HomeScreen: FC<RootStackScreenProps<"Home">> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-  },
   header: {
     marginTop: 30,
     alignItems: "center",

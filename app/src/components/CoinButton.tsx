@@ -16,6 +16,7 @@ import coinBankLayoutAtom from "@src/recoil/coinBankLayoutAtom";
 import Layout from "@src/interface/Layout";
 import { getCenterPosition } from "@src/utils/layoutUtils";
 import useQuestionModalController from "@src/hooks/useQuestionModalController";
+import Coin from "@assets/coin.svg";
 
 interface Props {
   style?: StyleProp<ViewStyle>;
@@ -137,7 +138,7 @@ const CoinButton: FC<Props> = ({ style }) => {
             });
           }}
         >
-          <FontAwesome5 name="bitcoin" size={70} color="#f1c40f" />
+          <Coin with={70} height={70} />
         </Animated.View>
       </GestureDetector>
     </View>
