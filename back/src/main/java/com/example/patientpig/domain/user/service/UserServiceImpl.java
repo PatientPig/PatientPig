@@ -1,8 +1,8 @@
 package com.example.patientpig.domain.user.service;
 
 import com.example.patientpig.domain.user.domain.User;
-import com.example.patientpig.domain.user.domain.UserResponse;
 import com.example.patientpig.domain.user.domain.repository.UserRepository;
+import com.example.patientpig.domain.user.presentation.dto.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -46,20 +46,22 @@ public class UserServiceImpl implements UserService {
 
         if (pig < LEVEL_1) {
             return 1;
-        } else if (pig >= LEVEL_1 && pig < LEVEL_2) {
+        } else if (LEVEL_1 <= pig && pig < LEVEL_2) {
             return 2;
-        } else if (pig >= LEVEL_2 && pig < LEVEL_3) {
+        } else if (LEVEL_2 <= pig && pig < LEVEL_3) {
             return 3;
         }
 
         return 4;
     }
 
+    @Transactional
     public void updateUser(String nickname, String newNickname) {
         User user = userRepository.findByNickname(nickname);
         user.updateNickname(newNickname);
     }
 
+    @Transactional(readOnly = true)
     public List<UserResponse> getPigRanking() {
         return userRepository.findAllByOrderByPig().stream()
                 .map(UserResponse::of)

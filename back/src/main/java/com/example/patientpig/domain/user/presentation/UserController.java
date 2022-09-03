@@ -1,11 +1,12 @@
-package com.example.patientpig.user.controller;
+package com.example.patientpig.domain.user.presentation;
 
-import com.example.patientpig.user.domain.UserResponse;
-import com.example.patientpig.user.service.UserServiceImpl;
+import com.example.patientpig.domain.user.presentation.dto.UserResponse;
+import com.example.patientpig.domain.user.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/user")
@@ -15,17 +16,17 @@ public class UserController {
     private final UserServiceImpl userService;
 
     @PostMapping
-    public void createUser(@RequestBody String nickname) {
+    public void createUser(@RequestParam String nickname) {
         userService.createUser(nickname);
     }
 
     @GetMapping
-    public Integer getPig(@RequestBody String nickname) {
+    public Integer getPig(@RequestParam String nickname) {
         return userService.getPig(nickname);
     }
 
     @PutMapping
-    public void updateUser(@RequestBody String nickname, String newNickname){
+    public void updateUser(@RequestParam String nickname, @RequestParam(name = "new") String newNickname){
         userService.updateUser(nickname, newNickname);
     }
 
