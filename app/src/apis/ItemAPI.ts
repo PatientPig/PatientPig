@@ -22,7 +22,7 @@ export const getItems = () =>
     ];
     setTimeout(() => {
       resolve(dummyItems);
-    }, 3000);
+    }, 1000);
   });
 
 export const createItem = (args: { value: number; text: string }) =>
