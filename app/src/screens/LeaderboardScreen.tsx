@@ -1,61 +1,74 @@
 import React, { FC } from "react";
-import { View, StyleSheet, FlatList, ListRenderItem } from "react-native";
-import { RootStackScreenProps } from "@src/types/navigation";
-import { useQuery } from "@tanstack/react-query";
-import { getRanking } from "@src/apis/RankingApi";
+import { View, StyleSheet, FlatList, ListRenderItem, Image, StatusBar } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useHeaderHeight } from "@react-navigation/elements";
+
 import Text from "@src/components/Text";
+import { RootStackScreenProps } from "@src/types/navigation";
 import User from "@src/interface/User";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import SafeAreaView from "@src/components/SafeAreaView";
+import useRanking from "@src/query/useRanking";
 
 const LeaderboardScreen: FC<RootStackScreenProps<"Leaderboard">> = () => {
-  const { isLoading, data: Ranking } = useQuery(["Ranking"], getRanking);
-  const renderItem: ListRenderItem<User> = (info) => (
-    <View style={styles.Container}>
-      <View style={styles.nameBox}>
-        <View style={{ ...styles.circle, top: 5, left: 5 }}></View>
-        <View style={{ ...styles.circle, top: 5, right: 5 }}></View>
-        <View style={{ ...styles.circle, bottom: 5, left: 5 }}></View>
-        <View style={{ ...styles.circle, bottom: 5, right: 5 }}></View>
-        <Text style={styles.nametext}>{info.item.id}</Text>
+  const headerHeight = useHeaderHeight();
+  const { isLoading, data: users } = useRanking();
+
+  const renderItem: ListRenderItem<User> = ({ index, item }) => {
+    const isFirstItem = index === 0;
+
+    return (
+      <View style={styles.Container}>
+        <View style={[styles.rankingBox, isFirstItem && { backgroundColor: "#F71374" }]}>
+          <Text style={styles.nametext}>{index + 1}</Text>
+        </View>
+        <View style={styles.dataBox}>
+          <Text style={styles.text}>{item.id}</Text>
+          <Text style={[styles.text, isFirstItem && { color: "#F71374" }]}>{item.value}</Text>
+        </View>
       </View>
-      <View style={styles.scoreBox}>
-        <Text style={styles.text}>{info.item.value}</Text>
-      </View>
-    </View>
-  );
-  if (isLoading) return <Text>Loading...</Text>;
+    );
+  };
+
+  if (isLoading) {
+    return <Text>Loading...</Text>;
+  }
+
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1, paddingTop: headerHeight }}>
+      <StatusBar barStyle="dark-content" />
       <View style={styles.header}>
-        <MaterialCommunityIcons name="trophy" size={30} color="white" />
         <Text style={styles.title}>최강 꿀꿀이를 찾아라!</Text>
+        <Image source={require("@assets/Ranking.png")} />
       </View>
-      <FlatList data={Ranking} renderItem={renderItem} keyExtractor={(item, index) => item.id} />
+      <FlatList data={users} renderItem={renderItem} keyExtractor={(item, index) => item.id} />
     </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
   Container: {
-    backgroundColor: "#FFCF72",
-    borderRadius: 5,
-    padding: 10,
     marginLeft: 10,
     marginRight: 10,
     flexDirection: "row",
+    height: 60,
+    marginBottom: 10,
   },
-  scoreBox: {
+  section: {
+    flex: 1,
+  },
+  dataBox: {
     backgroundColor: "#E4E4E4",
     padding: 10,
-    borderRadius: 5,
-    minWidth: "55%",
+    flexDirection: "row",
+    borderRadius: 15,
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "75%",
   },
-  nameBox: {
-    backgroundColor: "#F71374",
+  rankingBox: {
+    backgroundColor: "#8D8D8D",
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 15,
     marginRight: 10,
-    minWidth: 100,
+    width: 60,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -64,26 +77,18 @@ const styles = StyleSheet.create({
     color: "white",
   },
   text: {
-    fontSize: 30,
+    fontSize: 20,
   },
   title: {
-    margin: 10,
-    fontSize: 33,
-    color: "white",
+    margin: 15,
+    fontSize: 30,
+    color: "#5D5FDA",
     textAlign: "center",
   },
   header: {
     alignItems: "center",
-    flexDirection: "row",
     justifyContent: "center",
-    marginBottom: 20,
-  },
-  circle: {
-    backgroundColor: "white",
-    borderRadius: 12,
-    width: 3,
-    height: 3,
-    position: "absolute",
+    marginBottom: -50,
   },
 });
 export default LeaderboardScreen;

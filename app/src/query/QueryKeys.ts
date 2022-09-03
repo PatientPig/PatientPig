@@ -1,3 +1,5 @@
 export default {
-  authUser: () => ["me"],
+  getItems: () => ["items"],
+
+  getRanking: () => ["ranking"],
 };

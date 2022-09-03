@@ -34,7 +34,7 @@ const CoinBank: FC<Props> = () => {
 const styles = StyleSheet.create({
   image: {
     width: 239,
-    height: 258,
+    height: 239,
   },
 });
 

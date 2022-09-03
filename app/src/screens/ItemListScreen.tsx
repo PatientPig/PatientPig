@@ -1,23 +1,33 @@
 import React, { FC } from "react";
-import { SafeAreaView, StyleSheet, View, FlatList, ListRenderItem } from "react-native";
+import { SafeAreaView, StyleSheet, View, FlatList, ListRenderItem, StatusBar } from "react-native";
 import { RootStackScreenProps } from "@src/types/navigation";
-import { getItems } from "@src/apis/ItemAPI";
+import { AntDesign } from "@expo/vector-icons";
+import Swipeable from "react-native-gesture-handler/Swipeable";
+
 import Text from "@src/components/Text";
 import Item from "@src/interface/Item";
-import { AntDesign, FontAwesome5 } from "@expo/vector-icons";
-import { useQuery } from "@tanstack/react-query";
+import useItems from "@src/query/useItems";
+
 const ItemListScreen: FC<RootStackScreenProps<"ItemList">> = () => {
-  const renderItem: ListRenderItem<Item> = (info) => {
+  const { data: items, isLoading } = useItems();
+  function numberWithCommas(x: string): string {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+  const renderItem: ListRenderItem<Item> = ({ item }) => {
+    const commasNumber = numberWithCommas(String(item.value));
     return (
-      <>
+      <View style={styles.container}>
         <View style={styles.item}>
-          <AntDesign name="like2" size={24} color="#0288D1" />
-          <Text style={{ fontSize: 10 }}>{info.item.desc}</Text>
+          <AntDesign name="like2" size={24} color="black" />
+          <Text numberOfLines={1} style={{ fontSize: 20, marginLeft: 10, width: "90%" }}>
+            {item.desc}
+          </Text>
         </View>
-      </>
+        <Text style={styles.value}>{commasNumber}P</Text>
+      </View>
     );
   };
-  const { isLoading, data: Items } = useQuery<Item[]>(["Items"], getItems);
+
   if (isLoading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -25,15 +35,16 @@ const ItemListScreen: FC<RootStackScreenProps<"ItemList">> = () => {
       </View>
     );
   }
+
   return (
     <SafeAreaView style={styles.safeArea}>
+      <StatusBar barStyle="dark-content" />
       <View style={styles.header}>
-        <FontAwesome5 name="piggy-bank" size={45} color="#EE6983" />
-        <Text style={{ fontSize: 40 }}>잘 참았다 꿀!</Text>
+        <Text style={{ fontSize: 30, color: "#5D5FDA" }}>잘 참았다 꿀!</Text>
       </View>
       <FlatList
         style={styles.ItemContainer}
-        data={Items}
+        data={items}
         renderItem={renderItem}
         keyExtractor={(item, index) => item.desc}
       ></FlatList>
@@ -41,18 +52,34 @@ const ItemListScreen: FC<RootStackScreenProps<"ItemList">> = () => {
   );
 };
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginBottom: 10,
+  },
   header: {
     flexDirection: "row",
     alignItems: "flex-end",
     justifyContent: "space-evenly",
+    marginBottom: 20,
+  },
+  value: {
+    backgroundColor: "#F71374",
+    color: "white",
+    width: "25%",
+    textAlign: "center",
+    borderRadius: 10,
+    padding: 15,
+    fontSize: 20,
   },
   item: {
+    flexDirection: "row",
     alignItems: "center",
     borderColor: "black",
     borderWidth: 1,
     borderRadius: 10,
-    width: "90%",
-    margin: 10,
+    width: "70%",
+    marginRight: 10,
     padding: 5,
   },
   safeArea: {
@@ -65,4 +92,5 @@ const styles = StyleSheet.create({
     fontSize: 80,
   },
 });
+
 export default ItemListScreen;
