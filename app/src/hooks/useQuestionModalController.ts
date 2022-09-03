@@ -1,27 +1,22 @@
 import questionModalAtom from "@src/recoil/questionModalAtom";
 import { useCallback } from "react";
-import { useSetRecoilState } from "recoil";
+import { useResetRecoilState, useSetRecoilState } from "recoil";
 
 function useQuestionModalController() {
   const setQuestionModalState = useSetRecoilState(questionModalAtom);
+  const resetQuestionModalState = useResetRecoilState(questionModalAtom);
 
-  const showQuestionModal = useCallback(() => {
+  const showQuestionModal = useCallback((args: { value: number }) => {
     setQuestionModalState((prev) => ({
       ...prev,
       showing: true,
-    }));
-  }, []);
-
-  const hideQuestionModal = useCallback(() => {
-    setQuestionModalState((prev) => ({
-      ...prev,
-      showing: false,
+      value: args.value,
     }));
   }, []);
 
   return {
     showQuestionModal,
-    hideQuestionModal,
+    hideQuestionModal: resetQuestionModalState,
   };
 }
 

@@ -66,9 +66,10 @@ const CoinButton: FC<Props> = ({ style }) => {
 
     movePositionX.value = withTiming(diffX, { duration: 500 }, (finished) => {
       if (finished) {
+        const value = currentAt.value - lastTouchedAt.value;
         movePositionX.value = 0;
         lastTouchedAt.value = 0;
-        runOnJS(showQuestionModal)();
+        runOnJS(showQuestionModal)({ value });
       }
     });
 

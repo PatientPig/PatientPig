@@ -9,20 +9,24 @@ import {
   BottomSheetBackdropProps,
   BottomSheetTextInput,
 } from "@gorhom/bottom-sheet";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 
 import Text from "@src/components/Text";
 import questionModalAtom from "@src/recoil/questionModalAtom";
 import useQuestionModalController from "@src/hooks/useQuestionModalController";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { numberWithCommas } from "@src/utils/formatUtils";
+import useItemCreateMutation from "@src/query/useItemCreateMutation";
 
 const QuestionModal: FC = () => {
   const ref = useRef<BottomSheetModal>(null);
 
   const { bottom } = useSafeAreaInsets();
 
-  const { showing } = useRecoilValue(questionModalAtom);
+  const { showing, value } = useRecoilValue(questionModalAtom);
   const { hideQuestionModal } = useQuestionModalController();
+
+  const itemCreateMutate = useItemCreateMutation();
 
   const initialSnapPoints = useMemo(() => ["CONTENT_HEIGHT"], []);
 
@@ -39,7 +43,12 @@ const QuestionModal: FC = () => {
 
   const renderBackdrop = useCallback(
     (props: BottomSheetBackdropProps) => (
-      <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={0} />
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
+        pressBehavior="none"
+      />
     ),
     []
   );
@@ -48,8 +57,17 @@ const QuestionModal: FC = () => {
   const disableConfirmButton = text.trim().length === 0;
 
   const confirm = () => {
+    itemCreateMutate.mutate({
+      value,
+      text,
+    });
     hideQuestionModal();
   };
+
+  const handleDismiss = useCallback(() => {
+    hideQuestionModal();
+    setText("");
+  }, []);
 
   return (
     <BottomSheetModal
@@ -62,18 +80,29 @@ const QuestionModal: FC = () => {
       keyboardBlurBehavior="restore"
       android_keyboardInputMode="adjustResize"
       handleComponent={null}
-      onDismiss={() => {
-        hideQuestionModal();
-      }}
+      enableOverDrag={false}
+      enablePanDownToClose={false}
+      onDismiss={handleDismiss}
       backdropComponent={renderBackdrop}
     >
       <BottomSheetView
         style={[styles.container, { paddingBottom: bottom ? bottom + 15 : 30 }]}
         onLayout={handleContentLayout}
       >
+        <TouchableOpacity
+          style={styles.closeButton}
+          onPress={() => {
+            hideQuestionModal();
+          }}
+        >
+          <AntDesign name="close" size={24} color="black" />
+        </TouchableOpacity>
         <View style={styles.header}>
           <MaterialCommunityIcons name="pig" size={50} color="#e84393" />
-          <Text style={styles.title}>{`잘 참았다!\n이번엔 어떤걸 참았꿀?`}</Text>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>{`잘 참았다 ${numberWithCommas(value)}P!`}</Text>
+            <Text style={styles.title}>이번엔 어떤걸 참았꿀?</Text>
+          </View>
         </View>
         <BottomSheetTextInput
           style={styles.textInput}
@@ -106,10 +135,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
+  titleContainer: {
+    marginLeft: 8,
+  },
   title: {
     flex: 1,
     fontSize: 20,
-    marginLeft: 8,
   },
   textInput: {
     marginHorizontal: 20,
@@ -139,6 +170,12 @@ const styles = StyleSheet.create({
   },
   disabledConfirmButton: {
     backgroundColor: "#CFD2CF",
+  },
+  closeButton: {
+    position: "absolute",
+    top: 20,
+    right: 18,
+    zIndex: 100,
   },
 });
 
