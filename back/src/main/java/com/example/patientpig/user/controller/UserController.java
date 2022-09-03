@@ -29,7 +29,7 @@ public class UserController {
         userService.updateUser(nickname, newNickname);
     }
 
-    @GetMapping
+    @GetMapping("/ranking")
     public List<UserResponse> getPigRanking() {
         return userService.getPigRanking();
     }
