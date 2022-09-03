@@ -10,6 +10,7 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import useFonts from "@src/hooks/useFonts";
 import RootStackScreen from "@src/screens/RootStackScreen";
 import QuestionModal from "@src/components/QuestionModal";
+import AuthContainer from "@src/components/AuthContainer";
 
 const queryClient = new QueryClient();
 
@@ -21,20 +22,22 @@ const App: FC = () => {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <RecoilRoot>
+    <RecoilRoot>
+      <QueryClientProvider client={queryClient}>
         <SafeAreaProvider onLayout={onLayoutRootView}>
-          <NavigationContainer>
-            <GestureHandlerRootView style={styles.rnghRoot}>
-              <BottomSheetModalProvider>
-                <RootStackScreen />
-                <QuestionModal />
-              </BottomSheetModalProvider>
-            </GestureHandlerRootView>
-          </NavigationContainer>
+          <AuthContainer>
+            <NavigationContainer>
+              <GestureHandlerRootView style={styles.rnghRoot}>
+                <BottomSheetModalProvider>
+                  <RootStackScreen />
+                  <QuestionModal />
+                </BottomSheetModalProvider>
+              </GestureHandlerRootView>
+            </NavigationContainer>
+          </AuthContainer>
         </SafeAreaProvider>
-      </RecoilRoot>
-    </QueryClientProvider>
+      </QueryClientProvider>
+    </RecoilRoot>
   );
 };
 
