@@ -16,8 +16,8 @@ public class UserController {
     private final UserServiceImpl userService;
 
     @PostMapping
-    public void createUser(@RequestParam String nickname) {
-        userService.createUser(nickname);
+    public String createUserAndGetNickname() {
+        return userService.createUserAndGetNickname();
     }
 
     @GetMapping
@@ -26,8 +26,8 @@ public class UserController {
     }
 
     @PutMapping
-    public void updateUser(@RequestParam String nickname, @RequestParam(name = "new") String newNickname){
-        userService.updateUser(nickname, newNickname);
+    public String updateUser(@RequestParam String nickname, @RequestParam(name = "new") String newNickname){
+        return userService.updateUser(nickname, newNickname);
     }
 
     @GetMapping("/ranking")
