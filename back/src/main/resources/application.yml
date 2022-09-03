@@ -1,25 +1,25 @@
 spring:
-  profiles:
-    active: local
+    profiles:
+        active: local
 
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
+    mvc:
+        pathmatch:
+            matching-strategy: ant_path_matcher
 
-  datasource:
-    url: jdbc:mysql://127.0.0.1:3307/patient_pig
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: pig
-    password: pig
+    datasource:
+        url: jdbc:mysql://127.0.0.1:3307/patient_pig
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        username: pig
+        password: pig
 
-  jpa:
-    show-sql: true
-    generate-ddl: true
-    hibernate:
-      ddl-auto: 'create-drop'
+    jpa:
+        show-sql: true
+        generate-ddl: true
+        hibernate:
+            ddl-auto: true
 
 pig:
-  LEVEL_1: 1000
-  LEVEL_2: 2000
-  LEVEL_3: 3000
+    LEVEL_1: 1000
+    LEVEL_2: 2000
+    LEVEL_3: 3000
 debug: true
