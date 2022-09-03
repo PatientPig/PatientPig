@@ -1,16 +1,23 @@
 import React, { FC } from "react";
-import { View, StyleSheet, FlatList, ListRenderItem, Image, StatusBar } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useHeaderHeight } from "@react-navigation/elements";
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  ListRenderItem,
+  Image,
+  StatusBar,
+  SafeAreaView,
+} from "react-native";
 
 import Text from "@src/components/Text";
 import { RootStackScreenProps } from "@src/types/navigation";
 import User from "@src/interface/User";
 import useRanking from "@src/query/useRanking";
+import useAuthUserId from "@src/hooks/useAuthUserId";
 
 const LeaderboardScreen: FC<RootStackScreenProps<"Leaderboard">> = () => {
-  const headerHeight = useHeaderHeight();
   const { isLoading, data: users } = useRanking();
+  const authUserId = useAuthUserId();
 
   const renderItem: ListRenderItem<User> = ({ index, item }) => {
     const isFirstItem = index === 0;
@@ -21,7 +28,7 @@ const LeaderboardScreen: FC<RootStackScreenProps<"Leaderboard">> = () => {
           <Text style={styles.nametext}>{index + 1}</Text>
         </View>
         <View style={styles.dataBox}>
-          <Text style={styles.text}>{item.id}</Text>
+          <Text style={styles.text}>{`${item.id}${authUserId === item.id ? "(나)" : ""}`}</Text>
           <Text style={[styles.text, isFirstItem && { color: "#F71374" }]}>{item.value}</Text>
         </View>
       </View>
@@ -33,14 +40,22 @@ const LeaderboardScreen: FC<RootStackScreenProps<"Leaderboard">> = () => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, paddingTop: headerHeight }}>
-      <StatusBar barStyle="dark-content" />
-      <View style={styles.header}>
-        <Text style={styles.title}>최강 꿀꿀이를 찾아라!</Text>
-        <Image source={require("@assets/Ranking.png")} />
-      </View>
-      <FlatList data={users} renderItem={renderItem} keyExtractor={(item, index) => item.id} />
-    </SafeAreaView>
+    <>
+      <StatusBar barStyle="dark-content" backgroundColor="white" />
+      <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+        <FlatList
+          data={users}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => item.id}
+          ListHeaderComponent={
+            <View style={styles.header}>
+              <Text style={styles.title}>최강 꿀꿀이를 찾아라!</Text>
+              <Image source={require("@assets/Ranking.png")} />
+            </View>
+          }
+        />
+      </SafeAreaView>
+    </>
   );
 };
 const styles = StyleSheet.create({

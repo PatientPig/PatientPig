@@ -38,7 +38,7 @@ const ItemListScreen: FC<RootStackScreenProps<"ItemList">> = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar barStyle="dark-content" backgroundColor="white" />
       <View style={styles.header}>
         <Text style={{ fontSize: 30, color: "#5D5FDA" }}>잘 참았다 꿀!</Text>
       </View>
@@ -47,7 +47,7 @@ const ItemListScreen: FC<RootStackScreenProps<"ItemList">> = () => {
         data={items}
         renderItem={renderItem}
         keyExtractor={(item, index) => item.desc}
-      ></FlatList>
+      />
     </SafeAreaView>
   );
 };

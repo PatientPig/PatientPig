@@ -13,7 +13,7 @@ const RootStackScreen: FC = () => (
   <Stack.Navigator
     initialRouteName="Home"
     screenOptions={{
-      headerTransparent: true,
+      headerShadowVisible: false,
       headerTitleStyle: {
         fontFamily: "DungGeunMo",
       },
