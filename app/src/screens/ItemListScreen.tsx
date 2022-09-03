@@ -12,17 +12,19 @@ const ItemListScreen: FC<RootStackScreenProps<"ItemList">> = () => {
     getItems().then((Item) => setItems(Item));
     setLoading(false);
   }, []);
-  console.log(Items);
   if (loading) {
     return <Text>Loading...</Text>;
   }
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={styles.safeArea}>
       <View style={styles.header}>
         <FontAwesome5 name="piggy-bank" size={45} color="#EE6983" />
         <Text style={{ fontSize: 40 }}>잘 참았다 꿀!</Text>
       </View>
-      <ScrollView style={styles.ItemContainer}>
+      <ScrollView
+        style={styles.ItemContainer}
+        contentContainerStyle={{ flexDirection: "row", flexWrap: "wrap" }}
+      >
         {Items?.map((item, index) => (
           <View style={styles.item} key={index}>
             <AntDesign name="like2" size={24} color="#0288D1" />
@@ -48,9 +50,10 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 5,
   },
-  ItemContainer: {
+  safeArea: {
     flex: 1,
-    flexDirection: "row",
+  },
+  ItemContainer: {
     margin: 10,
     flexWrap: "wrap",
   },
