@@ -21,16 +21,6 @@ public class UserServiceImpl implements UserService {
     private final UserFacade userFacade;
     private final NicknameGenerator nicknameGenerator;
 
-    @Value("${pig.LEVEL_1}")
-    private Integer LEVEL_1;
-
-    @Value("${pig.LEVEL_2}")
-    private Integer LEVEL_2;
-
-    @Value("${pig.LEVEL_3}")
-    private Integer LEVEL_3;
-
-
     @Override
     @Transactional
     public String createUserAndGetNickname() {
@@ -42,18 +32,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public Integer getPig(String nickname) { // 분기 컨트롤 여기서 (테스트하며 한계값 수정)
-        double pig = userFacade.findByNickname(nickname).getPig();
-
-        if (pig < LEVEL_1) {
-            return 1;
-        } else if (LEVEL_1 <= pig && pig < LEVEL_2) {
-            return 2;
-        } else if (LEVEL_2 <= pig && pig < LEVEL_3) {
-            return 3;
-        }
-
-        return 4;
+    public Integer getPig(String nickname) {
+        return userFacade.findByNickname(nickname).getPig();
     }
 
     @Transactional
@@ -66,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     public List<UserResponse> getPigRanking() {
-        return userRepository.findAllByOrderByPig().stream()
+        return userRepository.findAllByOrderByPigDesc().stream()
                 .map(UserResponse::of)
                 .collect(Collectors.toList());
     }
