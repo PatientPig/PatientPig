@@ -8,6 +8,7 @@ import com.example.patientpig.domain.user.domain.User;
 import com.example.patientpig.domain.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,17 +21,22 @@ public class CoinServiceImpl implements CoinService {
     private final UserRepository userRepository;
 
     @Override
+    @Transactional
     public void createCoin(CreateCoinRequest request) {
+        User user = userRepository.findByNickname(request.getNickname());
         coinRepository.save(
                 Coin.builder()
-                        .user(userRepository.findByNickname(request.getNickname()))
+                        .user(user)
                         .time(request.getTime())
                         .content(request.getContent())
                         .build()
         );
+
+        user.feedPig(request.getTime());
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<CoinResponse> getCoinHistory(String nickname) {
         User user = userRepository.findByNickname(nickname);
 

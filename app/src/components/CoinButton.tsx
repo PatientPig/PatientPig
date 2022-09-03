@@ -4,19 +4,18 @@ import Animated, {
   useSharedValue,
   useAnimatedStyle,
   useDerivedValue,
-  useAnimatedReaction,
   withTiming,
-  interpolate,
-  withSequence,
+  runOnJS,
 } from "react-native-reanimated";
+import { useRecoilValue } from "recoil";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import { FontAwesome5 } from "@expo/vector-icons";
 
 import Text from "@src/components/Text";
-import { useRecoilValue } from "recoil";
 import coinBankLayoutAtom from "@src/recoil/coinBankLayoutAtom";
-import Layout, { Position } from "@src/interface/Layout";
+import Layout from "@src/interface/Layout";
 import { getCenterPosition } from "@src/utils/layoutUtils";
+import useQuestionModalController from "@src/hooks/useQuestionModalController";
+import Coin from "@assets/coin.svg";
 
 interface Props {
   style?: StyleProp<ViewStyle>;
@@ -49,6 +48,8 @@ const CoinButton: FC<Props> = ({ style }) => {
     return true;
   });
 
+  const { showQuestionModal } = useQuestionModalController();
+
   const coinRef = useRef<Animated.View>(null);
   const [coinLayout, setCoinLayout] = useState<Layout>({ x: 0, y: 0, width: 0, height: 0 });
   const coinBankLayout = useRecoilValue(coinBankLayoutAtom);
@@ -65,8 +66,10 @@ const CoinButton: FC<Props> = ({ style }) => {
 
     movePositionX.value = withTiming(diffX, { duration: 500 }, (finished) => {
       if (finished) {
+        const value = currentAt.value - lastTouchedAt.value;
         movePositionX.value = 0;
         lastTouchedAt.value = 0;
+        runOnJS(showQuestionModal)({ value });
       }
     });
 
@@ -121,20 +124,19 @@ const CoinButton: FC<Props> = ({ style }) => {
   return (
     <View style={[styles.container, style]}>
       <Animated.View style={[styles.guide, guideAnimatedStyle]}>
-        <Text style={{ fontSize: 25 }}>TOUCHE ME</Text>
-        <FontAwesome5 name="sort-down" size={24} color="black" />
+        <Text style={styles.guideText}>TOUCHE ME!</Text>
       </Animated.View>
       <GestureDetector gesture={panGesture}>
         <Animated.View
           ref={coinRef}
-          style={[styles.button, coinAnimatedStyle]}
+          style={coinAnimatedStyle}
           onLayout={() => {
-            coinRef.current?.measureInWindow((x, y, width, height) => {
-              setCoinLayout({ x, y, height, width });
+            coinRef.current?.measure((x, y, width, height, pageX, pageY) => {
+              setCoinLayout({ x: pageX, y: pageY, height, width });
             });
           }}
         >
-          <FontAwesome5 name="bitcoin" size={70} color="#f1c40f" />
+          <Coin with={70} height={70} />
         </Animated.View>
       </GestureDetector>
     </View>
@@ -147,9 +149,11 @@ const styles = StyleSheet.create({
   },
   guide: {
     alignItems: "center",
+    marginBottom: 28,
   },
-  button: {
-    marginTop: 15,
+  guideText: {
+    fontSize: 25,
+    color: "white",
   },
 });
 

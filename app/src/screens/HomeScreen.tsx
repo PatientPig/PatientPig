@@ -1,34 +1,40 @@
 import React, { FC } from "react";
-import { View, StyleSheet, TouchableOpacity, SafeAreaView } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 
+import SafeAreaView from "@src/components/SafeAreaView";
 import { RootStackScreenProps } from "@src/types/navigation";
 import CoinBank from "@src/components/CoinBank";
 import CoinButton from "@src/components/CoinButton";
+import SignBoard from "@src/components/SignBoard";
 import Text from "@src/components/Text";
 
 const HomeScreen: FC<RootStackScreenProps<"Home">> = ({ navigation }) => {
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.headerButton}
-          onPress={() => {
-            navigation.navigate("Leaderboard");
-          }}
-        >
-          <Text style={{ fontSize: 25 }}>리더보드</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.headerButton}
-          onPress={() => {
-            navigation.navigate("ItemList");
-          }}
-        >
-          <Text style={{ fontSize: 25 }}>인내목록</Text>
-        </TouchableOpacity>
-      </View>
+    <SafeAreaView>
+      <SignBoard style={styles.signBoard} />
       <View style={styles.body}>
         <CoinBank />
+        <View style={styles.actions}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              navigation.navigate("Leaderboard");
+            }}
+          >
+            <MaterialIcons name="leaderboard" size={24} color="#9D9FFF" />
+            <Text style={styles.buttonText}>리더보드</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.button, { marginLeft: 14 }]}
+            onPress={() => {
+              navigation.navigate("ItemList");
+            }}
+          >
+            <MaterialCommunityIcons name="archive-check-outline" size={24} color="#9D9FFF" />
+            <Text style={styles.buttonText}>인내목록</Text>
+          </TouchableOpacity>
+        </View>
       </View>
       <View style={styles.footer}>
         <CoinButton />
@@ -38,24 +44,26 @@ const HomeScreen: FC<RootStackScreenProps<"Home">> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-  },
-  header: {
+  signBoard: {
     marginTop: 30,
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "row",
   },
-  headerButton: {
-    marginHorizontal: 20,
-    paddingHorizontal: 10,
-    paddingVertical: 14,
-    borderWidth: 1,
-    borderColor: "black",
-    flex: 1,
+  actions: {
+    flexDirection: "row",
+    marginTop: 40,
+  },
+  button: {
+    paddingLeft: 10,
+    paddingVertical: 10,
+    backgroundColor: "#5D5FDA",
+    borderRadius: 10,
+    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+  },
+  buttonText: {
+    fontSize: 16,
+    marginLeft: 10,
+    color: "white",
+    minWidth: 86,
   },
   body: {
     flex: 1,
