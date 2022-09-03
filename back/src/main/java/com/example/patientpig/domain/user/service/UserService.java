@@ -1,6 +1,6 @@
-package com.example.patientpig.user.service;
+package com.example.patientpig.domain.user.service;
 
-import com.example.patientpig.user.presentation.dto.UserResponse;
+import com.example.patientpig.domain.user.presentation.dto.UserResponse;
 
 import java.util.List;
 

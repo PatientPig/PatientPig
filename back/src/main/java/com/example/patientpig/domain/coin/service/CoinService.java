@@ -1,6 +1,6 @@
-package com.example.patientpig.coin.service;
+package com.example.patientpig.domain.coin.service;
 
-import com.example.patientpig.coin.presentation.dto.CoinResponse;
+import com.example.patientpig.domain.coin.presentation.dto.CoinResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;
