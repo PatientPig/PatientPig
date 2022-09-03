@@ -15,5 +15,14 @@ module.exports = {
         additionalHooks: "(useRecoilCallback|useRecoilTransaction_UNSTABLE)",
       },
     ],
+    "prettier/prettier": [
+      "error",
+      {
+        endOfLine: "auto",
+      },
+    ],
+  },
+  settings: {
+    "import/ignore": ["react-native"],
   },
 };
