@@ -1,31 +1,13 @@
 import User from "@src/interface/User";
+import axios from "@src/apis/axios";
 
-export const getRanking = () =>
-  new Promise<User[]>((resolve) => {
-    const Ranking: User[] = [
-      {
-        id: "user-100",
-        value: 0,
-      },
-      {
-        id: "user-1800",
-        value: 100,
-      },
-      {
-        id: "user-300",
-        value: 250,
-      },
-      {
-        id: "user-60",
-        value: 240,
-      },
-      {
-        id: "user-700",
-        value: 630,
-      },
-    ];
+export const getRanking = async () => {
+  const res = await axios.get<{ nickname: string; pig: number }[]>("/user/ranking");
 
-    setTimeout(() => {
-      resolve(Ranking);
-    }, 2000);
-  });
+  const users: User[] = res.data.map(({ nickname, pig }) => ({
+    id: nickname,
+    value: pig,
+  }));
+
+  return users;
+};

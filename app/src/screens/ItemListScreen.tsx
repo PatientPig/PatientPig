@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { SafeAreaView, StyleSheet, View, FlatList, ListRenderItem } from "react-native";
+import { SafeAreaView, StyleSheet, View, FlatList, ListRenderItem, StatusBar } from "react-native";
 import { RootStackScreenProps } from "@src/types/navigation";
 import { AntDesign } from "@expo/vector-icons";
 import Swipeable from "react-native-gesture-handler/Swipeable";
@@ -38,6 +38,7 @@ const ItemListScreen: FC<RootStackScreenProps<"ItemList">> = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      <StatusBar barStyle="dark-content" />
       <View style={styles.header}>
         <Text style={{ fontSize: 30, color: "#5D5FDA" }}>잘 참았다 꿀!</Text>
       </View>

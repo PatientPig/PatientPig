@@ -1,52 +1,45 @@
 import React, { FC } from "react";
-import { View, StyleSheet, FlatList, ListRenderItem, Image } from "react-native";
-import { RootStackScreenProps } from "@src/types/navigation";
-import { useQuery } from "@tanstack/react-query";
-import { getRanking } from "@src/apis/RankingApi";
-import Text from "@src/components/Text";
-import User from "@src/interface/User";
+import { View, StyleSheet, FlatList, ListRenderItem, Image, StatusBar } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useHeaderHeight } from "@react-navigation/elements";
+
+import Text from "@src/components/Text";
+import { RootStackScreenProps } from "@src/types/navigation";
+import User from "@src/interface/User";
+import useRanking from "@src/query/useRanking";
 
 const LeaderboardScreen: FC<RootStackScreenProps<"Leaderboard">> = () => {
-  const { isLoading, data: Ranking } = useQuery<User[]>(["Ranking"], getRanking);
-  const renderItem: ListRenderItem<User> = (info) => {
-    if (info.index === 0) {
-      return (
-        <>
-          <View style={styles.Container}>
-            <View style={{ ...styles.rankingBox, backgroundColor: "#F71374" }}>
-              <Text style={styles.nametext}>{info.index + 1}</Text>
-            </View>
-            <View style={styles.dataBox}>
-              <Text style={styles.text}>{info.item.id}</Text>
-              <Text style={{ ...styles.text, color: "#F71374" }}>{info.item.value}</Text>
-            </View>
-          </View>
-        </>
-      );
-    }
+  const headerHeight = useHeaderHeight();
+  const { isLoading, data: users } = useRanking();
+
+  const renderItem: ListRenderItem<User> = ({ index, item }) => {
+    const isFirstItem = index === 0;
+
     return (
-      <>
-        <View style={styles.Container}>
-          <View style={styles.rankingBox}>
-            <Text style={styles.nametext}>{info.index + 1}</Text>
-          </View>
-          <View style={styles.dataBox}>
-            <Text style={styles.text}>{info.item.id}</Text>
-            <Text style={styles.text}>{info.item.value}</Text>
-          </View>
+      <View style={styles.Container}>
+        <View style={[styles.rankingBox, isFirstItem && { backgroundColor: "#F71374" }]}>
+          <Text style={styles.nametext}>{index + 1}</Text>
         </View>
-      </>
+        <View style={styles.dataBox}>
+          <Text style={styles.text}>{item.id}</Text>
+          <Text style={[styles.text, isFirstItem && { color: "#F71374" }]}>{item.value}</Text>
+        </View>
+      </View>
     );
   };
-  if (isLoading) return <Text>Loading...</Text>;
+
+  if (isLoading) {
+    return <Text>Loading...</Text>;
+  }
+
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, paddingTop: headerHeight }}>
+      <StatusBar barStyle="dark-content" />
       <View style={styles.header}>
         <Text style={styles.title}>최강 꿀꿀이를 찾아라!</Text>
         <Image source={require("@assets/Ranking.png")} />
       </View>
-      <FlatList data={Ranking} renderItem={renderItem} keyExtractor={(item, index) => item.id} />
+      <FlatList data={users} renderItem={renderItem} keyExtractor={(item, index) => item.id} />
     </SafeAreaView>
   );
 };
