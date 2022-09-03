@@ -1,5 +1,5 @@
 import React, { FC, useRef, useMemo, useEffect, useCallback, useState } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useRecoilValue } from "recoil";
 import {
   BottomSheetModal,
@@ -98,7 +98,7 @@ const QuestionModal: FC = () => {
           <AntDesign name="close" size={24} color="black" />
         </TouchableOpacity>
         <View style={styles.header}>
-          <MaterialCommunityIcons name="pig" size={50} color="#e84393" />
+          <Image source={require("@assets/thumb.png")} style={styles.image} />
           <View style={styles.titleContainer}>
             <Text style={styles.title}>{`잘 참았다 ${numberWithCommas(value)}P!`}</Text>
             <Text style={styles.title}>이번엔 어떤걸 참았꿀?</Text>
@@ -125,7 +125,7 @@ const QuestionModal: FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#F8EFD4",
+    backgroundColor: "#FFFFFF",
     borderTopRightRadius: 14,
     borderTopLeftRadius: 14,
   },
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     paddingHorizontal: 20,
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "flex-end",
   },
   titleContainer: {
     marginLeft: 8,
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   textInput: {
     marginHorizontal: 20,
     height: 160,
-    backgroundColor: "#FEF9EF",
+    backgroundColor: "#f4f4f4",
     marginVertical: 14,
     borderRadius: 6,
     paddingHorizontal: 6,
@@ -163,6 +163,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#ED6663",
     paddingVertical: 14,
     paddingHorizontal: 20,
+    height: 80,
   },
   confirmButtonText: {
     fontSize: 20,
@@ -176,6 +177,10 @@ const styles = StyleSheet.create({
     top: 20,
     right: 18,
     zIndex: 100,
+  },
+  image: {
+    width: 49,
+    height: 49,
   },
 });
 
