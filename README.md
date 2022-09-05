@@ -11,3 +11,6 @@
 
 ## Detail
 <img src="https://user-images.githubusercontent.com/71212038/188449311-61294cce-1cbc-4c6c-b5c1-46e7999b41fe.png" width="800">
+
+## Video
+https://user-images.githubusercontent.com/71212038/188457916-9457053f-f74b-44e4-8bc9-e3c2494d96c3.MP4
